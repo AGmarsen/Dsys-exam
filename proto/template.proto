@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package NAME;
+option go_package = "https://github.com/AGmarsen/Dsys-exam/proto;NAME";
+
+//protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative proto/template.proto
+service s {
+    
+    rpc bid (m) returns (m) {}
+}
+
+message m {
+    string name = 1;
+    int32 amount = 2;
+}
