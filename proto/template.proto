@@ -4,12 +4,25 @@ option go_package = "https://github.com/AGmarsen/Dsys-exam/proto";
 package proto;
 
 //protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative proto/template.proto
-service s {
+service Dictionary {
     
-    rpc bid (m) returns (m);
+    rpc Add (Entry) returns (Ack);
+    rpc Read (Key) returns (Value);
 }
 
-message m {
-    string name = 1;
-    int32 amount = 2;
+message Entry {
+    string word = 1;
+    string definition = 2;
+}
+
+message Ack {
+    bool success = 1;
+}
+
+message Key {
+    string word = 1;
+}
+
+message Value {
+    string definition = 1;
 }

@@ -14,86 +14,122 @@ import (
 // Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
-// SClient is the client API for S service.
+// DictionaryClient is the client API for Dictionary service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type SClient interface {
-	Bid(ctx context.Context, in *M, opts ...grpc.CallOption) (*M, error)
+type DictionaryClient interface {
+	Add(ctx context.Context, in *Entry, opts ...grpc.CallOption) (*Ack, error)
+	Read(ctx context.Context, in *Key, opts ...grpc.CallOption) (*Value, error)
 }
 
-type sClient struct {
+type dictionaryClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewSClient(cc grpc.ClientConnInterface) SClient {
-	return &sClient{cc}
+func NewDictionaryClient(cc grpc.ClientConnInterface) DictionaryClient {
+	return &dictionaryClient{cc}
 }
 
-func (c *sClient) Bid(ctx context.Context, in *M, opts ...grpc.CallOption) (*M, error) {
-	out := new(M)
-	err := c.cc.Invoke(ctx, "/proto.s/bid", in, out, opts...)
+func (c *dictionaryClient) Add(ctx context.Context, in *Entry, opts ...grpc.CallOption) (*Ack, error) {
+	out := new(Ack)
+	err := c.cc.Invoke(ctx, "/proto.Dictionary/Add", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// SServer is the server API for S service.
-// All implementations must embed UnimplementedSServer
+func (c *dictionaryClient) Read(ctx context.Context, in *Key, opts ...grpc.CallOption) (*Value, error) {
+	out := new(Value)
+	err := c.cc.Invoke(ctx, "/proto.Dictionary/Read", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// DictionaryServer is the server API for Dictionary service.
+// All implementations must embed UnimplementedDictionaryServer
 // for forward compatibility
-type SServer interface {
-	Bid(context.Context, *M) (*M, error)
-	mustEmbedUnimplementedSServer()
+type DictionaryServer interface {
+	Add(context.Context, *Entry) (*Ack, error)
+	Read(context.Context, *Key) (*Value, error)
+	mustEmbedUnimplementedDictionaryServer()
 }
 
-// UnimplementedSServer must be embedded to have forward compatible implementations.
-type UnimplementedSServer struct {
+// UnimplementedDictionaryServer must be embedded to have forward compatible implementations.
+type UnimplementedDictionaryServer struct {
 }
 
-func (UnimplementedSServer) Bid(context.Context, *M) (*M, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Bid not implemented")
+func (UnimplementedDictionaryServer) Add(context.Context, *Entry) (*Ack, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Add not implemented")
 }
-func (UnimplementedSServer) mustEmbedUnimplementedSServer() {}
+func (UnimplementedDictionaryServer) Read(context.Context, *Key) (*Value, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Read not implemented")
+}
+func (UnimplementedDictionaryServer) mustEmbedUnimplementedDictionaryServer() {}
 
-// UnsafeSServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to SServer will
+// UnsafeDictionaryServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to DictionaryServer will
 // result in compilation errors.
-type UnsafeSServer interface {
-	mustEmbedUnimplementedSServer()
+type UnsafeDictionaryServer interface {
+	mustEmbedUnimplementedDictionaryServer()
 }
 
-func RegisterSServer(s grpc.ServiceRegistrar, srv SServer) {
-	s.RegisterService(&S_ServiceDesc, srv)
+func RegisterDictionaryServer(s grpc.ServiceRegistrar, srv DictionaryServer) {
+	s.RegisterService(&Dictionary_ServiceDesc, srv)
 }
 
-func _S_Bid_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(M)
+func _Dictionary_Add_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Entry)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SServer).Bid(ctx, in)
+		return srv.(DictionaryServer).Add(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/proto.s/bid",
+		FullMethod: "/proto.Dictionary/Add",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SServer).Bid(ctx, req.(*M))
+		return srv.(DictionaryServer).Add(ctx, req.(*Entry))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// S_ServiceDesc is the grpc.ServiceDesc for S service.
+func _Dictionary_Read_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Key)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DictionaryServer).Read(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/proto.Dictionary/Read",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DictionaryServer).Read(ctx, req.(*Key))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// Dictionary_ServiceDesc is the grpc.ServiceDesc for Dictionary service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var S_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "proto.s",
-	HandlerType: (*SServer)(nil),
+var Dictionary_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "proto.Dictionary",
+	HandlerType: (*DictionaryServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "bid",
-			Handler:    _S_Bid_Handler,
+			MethodName: "Add",
+			Handler:    _Dictionary_Add_Handler,
+		},
+		{
+			MethodName: "Read",
+			Handler:    _Dictionary_Read_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
