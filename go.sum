@@ -1,6 +1,4 @@
 cloud.google.com/go v0.26.0/go.mod h1:aQUYkXzVsufM+DwF1aE+0xfcU+56JwCaLick0ClmMTw=
-github.com/AGmarsen/Handin-3 v0.0.0-20221110143923-e5f6eb45b73b h1:J2o6BXzcSR267D7+eK7jo41Le5dYgmXvMz0QJlMKeok=
-github.com/AGmarsen/Handin-3 v0.0.0-20221110143923-e5f6eb45b73b/go.mod h1:BKgiL7k1z5GtnCf4AyjJPbTM5fK3KszvcFU1c6ezW4M=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=

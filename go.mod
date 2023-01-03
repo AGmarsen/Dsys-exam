@@ -3,7 +3,6 @@ module github.com/AGmarsen/Dsys-exam
 go 1.19
 
 require (
-	github.com/AGmarsen/Handin-3 v0.0.0-20221110143923-e5f6eb45b73b
 	google.golang.org/grpc v1.51.0
 	google.golang.org/protobuf v1.28.1
 )
